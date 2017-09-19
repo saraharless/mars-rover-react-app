@@ -1,15 +1,17 @@
-import React, {
-  Component
-} from 'react';
+import React, {Component} from 'react';
 import '../styles/App.css';
-import apiKey from './apiKey.js';
+import API_KEY from './apiKey.js';
 import GetImageButton from './GetImageButton.js';
 import ImageDisplay from './ImageDisplay.js';
-const API_KEY = apiKey;
+
 
 export default class GetImageForm extends Component {
   constructor(props){
     super(props)
+
+  this.fetchRoverImage=this.fetchRoverImage.bind(this);
+  this.handleRover=this.handleRover.bind(this);
+  this.handleSol=this.handleSol.bind(this);    this.handleCamera=this.handleCamera.bind(this);
 
     this.state = {
   rover: "Curiosity",
@@ -17,9 +19,17 @@ export default class GetImageForm extends Component {
   images: [],
   sol: "",
 }
-
-      this.fetchRoverImage = this.fetchRoverImage.bind(this);
 }
+handleRover(e) {
+  this.setState({rover: e.targetvalue})
+}
+handleSol(e) {
+  this.setState({sol: e.target.value})
+}
+handleCamera(e) {
+  this.setState({camera: e.target.value})
+}
+
 
   fetchRoverImage(){
     this.setState({camera: this.state.camera, rover: this.state.rover, sol: this.state.sol});
@@ -28,17 +38,20 @@ let rove = this.state.rover;
 let num = this.state.sol;
 let imageUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/${rove}/photos?sol=${num}&camera=${cam}&api_key=${API_KEY}`;
 
-fetch(imageUrl).then((response) => {
+console.log('ghost toast');
+fetch(imageUrl)
+.then((response) => {
 return response.json()
 }).then((data)=> {
-this.setState({rover: data.photos.rover.name, cam: data.photos.camera.name, images: data.photos.img_src, sol:data.photos.sol})
-})
+  console.log(data);
+this.setState({images: data.photos})
+});
 }
 
   render() {
     return (
+      <div>
       <form>
-
       <label htmlFor="rover">Rover</label>
 <select onChange={this.handleRover} id="rover">
 <option value="Curiosity">Curiosity</option>
@@ -53,8 +66,9 @@ this.setState({rover: data.photos.rover.name, cam: data.photos.camera.name, imag
 </select>
 <label htmlFor="sol">Martian Sol: 1000-2000</label>
 <input type="number" onChange={this.handleSol} max="2000" min="1000"/>
-
       </form>
-    )
-  }
-  }
+      <GetImageButton click={this.fetchRoverImage}/>
+      <ImageDisplay images={this.state.images}/>
+      </div>
+    )}
+}
