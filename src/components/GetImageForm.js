@@ -1,21 +1,16 @@
-import React, { Component } from 'react';
+import React, {
+  Component
+} from 'react';
 import '../styles/App.css';
-import apiKey from './components/apiKey.js';
-import GetImageButton from './components/GetImageButton.js';
-import ImageDisplay from './components/ImageDisplay.js';
+import apiKey from './apiKey.js';
+import GetImageButton from './GetImageButton.js';
+import ImageDisplay from './ImageDisplay.js';
+const API_KEY = apiKey;
 
-
-class GetImageForm extends Components {
-  constructor(props){
-    super(props);
-//bind
-    this.handlePhoto = this.handlePhoto.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-//set state
-    this.state = {
-
-    };
+export default class GetImageForm extends Component {
+  render() {
+    return (
+      <div><h1>Ghost Toast</h1></div>
+    )
   }
-  //handle photo setstate
-}
-// handle submit setstate
+  }
